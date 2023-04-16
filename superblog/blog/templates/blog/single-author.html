@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load cache %}
+
+
+{% block content %}
+<section class="site-section pt-5">
+    <div class="container">
+        <div class="row blog-entries">
+            <div class="col-md-12 col-lg-8 main-content">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="mb-4">Посты автора: {{ object }}</h2>
+                    </div>
+                </div>
+
+                <div class="row mb-5 mt-5">
+                    <div class="col-md-12">
+
+                        {% for obj in posts %}
+
+                            <div class="post-entry-horzontal">
+                                <a href="{{ obj.get_absolute_url }}">
+                                    <div class="image element-animate" data-animate-effect="fadeIn"
+                                         style="background-image: url({{ obj.photo.url }});"></div>
+                                    <span class="text">
+                                          <div class="post-meta">
+                                            <span class="author mr-2"><img src="{{object.author_photo.url}}"
+                                                                           alt="{{ object }}"> {{ object}}</span>&bullet;
+                                            <span class="mr-2">{{ obj.created_at|date:'d.m.Y' }} </span> &bullet;
+                                            <span class="mr-2">просмотров: {{ obj.views }}</span> &bullet;
+                                            <span class="ml-2">
+                                                <span class="fa fa-comments">
+                                                    {{ obj.cnt_comment }}
+                                                </span>
+                                            </span>
+                                          </div>
+                                          <h2>{{ obj.title|safe|truncatewords_html:9 }}</h2>
+                                        </span>
+                                </a>
+                            </div>
+                        {% empty %}
+                            <h2>Нет постов</h2>
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- END main-content -->
+
+            {% cache 600 author_sidebar %}
+            <div class="col-md-12 col-lg-4 sidebar">
+
+                <div class="sidebar-box">
+                    <div class="bio text-center">
+                        <img src="{{ object.author_photo.url }}" alt="{{ object }}" class="img-fluid">
+                        <div class="bio-body">
+                            <h2>{{ object }}</h2>
+                            <p>{{ object.about|safe|truncatewords_html:50 }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                {% if author_categories %}
+                <div class="sidebar-box">
+                    <h3 class="heading">все теги автора</h3>
+                    <ul class="tags">
+                        {% for tag in author_tags %}
+                            <li><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></li>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+
+                <div class="sidebar-box">
+                    <h3 class="heading">Представлен в категориях</h3>
+                    <ul class="categories">
+                        {% for category in author_categories %}
+
+                        <li>
+                            <a href="{{ category.get_absolute_url }}">{{ category }}</a>
+                        </li>
+
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            </div>
+
+            {% endif %}
+            {% endcache %}
+        </div>
+    </div>
+    </div>
+</section>
+
+{% endblock %}

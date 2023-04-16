@@ -1,0 +1,10 @@
+<div class="sidebar-box">
+    <h3 class="heading">Все категории</h3>
+    <ul class="categories">
+        {% for category in categories %}
+            <li>
+                <a href="{{ category.get_absolute_url }}">{{ category }}<span>({{ category.cnt_post }})</span></a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

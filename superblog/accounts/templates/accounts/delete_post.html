@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<section class="site-section pt-5">
+    <div class="container">
+        <div class="row blog-entries">
+            <div class="col-md-12 col-lg-8 main-content">
+
+                {% if user.author.post_set.all %}
+                <div class="row mb-5 mt-5">
+                    <div class="col-md-12 mb-5">
+                        <h2>Мои посты</h2>
+                    </div>
+
+                    <div class="col-md-12">
+
+
+
+                            <div class="post-entry-horzontal">
+                                <a href="{{ obj.get_absolute_url }}">
+                                    <div class="image element-animate" data-animate-effect="fadeIn"
+                                         style="background-image: url({{ obj.photo.url }});"></div>
+                                    <span class="text">
+                                      <div class="post-meta">
+                                        <span class="author mr-2"><img src="https://picsum.photos/700/700/?blur"
+                                                                       alt="Colorlib"> {{ obj.author }}</span>&bullet;
+                                        <span class="mr-2">{{ obj.created_at|date:'d.m.Y' }} </span> &bullet;
+                                        <span class="mr-2">просморов: {{ obj.views }}</span> &bullet;
+                                        <span class="ml-2">
+                                            <span class="fa fa-comments">
+                                                {{ obj.postcomment_set.all|length }}
+                                            </span>
+                                        </span>
+                                      </div>
+                                      <h2>{{ obj.title|safe|truncatewords_html:9 }}</h2>
+                                          <a href="{% url 'update_post' obj.slug  %}"
+                               class="btn btn-primary btn-sm rounded">редактировать пост</a>
+                                        <a href="{% url 'delete_post' obj.slug  %}"
+                               class="btn btn-primary btn-sm rounded">удалить пост</a>
+                                    </span>
+                                </a>
+                            </div>
+                        {% endfor %}
+                        <!-- END post -->
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+
+            <!-- END main-content -->
+
+            <div class="col-md-12 col-lg-4 sidebar">
+
+
+                <div class="sidebar-box">
+                    <div class="bio text-center">
+
+                        {% if user.author %}
+                        <img src="https://picsum.photos/700/700/?blur" alt="Image Placeholder" class="img-fluid">
+                        <div class="bio-body">
+                            <h2>{{ user.author }}</h2>
+                            <p>{{ user.author.about|safe|truncatewords_html:50 }}</p>
+                            <p><a href="{% url 'add_author_info' user.username %}"
+                                  class="btn btn-primary btn-sm rounded">Редактировать</a></p>
+
+                            {% else %}
+                            <img src="https://picsum.photos/700/700/?blur" alt="Image Placeholder" class="img-fluid">
+                            <div class="bio-body">
+                                <h2>Имя Фамилия</h2>
+                                <p>Заполните информацию о себе, чтобы были доступны доп функции</p>
+                                <p><a href="{% url 'add_author_info' user.username %}"
+                                      class="btn btn-primary btn-sm rounded">Стать
+                                    автором</a></p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+</section>
+
+{% endblock %}

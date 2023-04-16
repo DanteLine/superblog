@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="site-section">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h1>Авторизация</h1>
+            </div>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-primary">войти</button>
+        </form>
+
+
+
+        </div>
+    </div>
+</section>
+
+
+</div>
+
+{% endblock %}

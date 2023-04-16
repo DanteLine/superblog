@@ -1,0 +1,65 @@
+{% load most_important_thing %}
+{% load cache %}
+
+<header role="banner">
+    <div class="top-bar">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-9 social">
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'lk' user.username %}"><span>{{ user.username }}</span></a>
+                        <a href="{% url 'logout' %}"><span>выход</span></a>
+                    {% else %}
+                        <a href="{% url 'login' %}"><span>вход</span></a>
+                        <a href="{% url 'register' %}"><span>регистрация</span></a>
+                    {% endif %}
+
+                </div>
+
+                <div class="col-3 search-top">
+                    <form action="{% url 'search' %}" class="search-top-form" method="GET">
+                      <input name="q" type="text" id="text_search" placeholder="Поиск">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container logo-wrap">
+        <div class="row pt-5">
+            <div class="col-12 text-center">
+                <a class="absolute-toggle d-block d-md-none" data-toggle="collapse" href="#navbarMenu" role="button"
+                   aria-expanded="false" aria-controls="navbarMenu"><span class="burger-lines"></span></a>
+                <h1 class="site-logo"><a href="{% url 'home' %}">Superblog</a></h1>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-md  navbar-light bg-light">
+        <div class="container">
+
+            <div class="collapse navbar-collapse" id="navbarMenu">
+                <ul class="navbar-nav mx-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Главная</a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown05" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Категории</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown05">
+                            {% cache 600 header_category %}
+                            {% show_header_slider %}
+                            {% endcache %}
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+</header>
+<!-- END header -->

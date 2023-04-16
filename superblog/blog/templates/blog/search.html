@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load most_important_thing %}
+
+{% block content %}
+<section class="site-section pt-5">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h2 class="mb-4">{{ keyword_search }}</h2>
+            </div>
+        </div>
+        <div class="row blog-entries">
+            <div class="col-md-12 col-lg-8 main-content">
+                <div class="row mb-5 mt-5">
+
+                    <div class="col-md-12">
+                        {% for obj in object_list %}
+
+                        <div class="post-entry-horzontal">
+                            <a href="{{ obj.get_absolute_url }}">
+                                <div class="image element-animate" data-animate-effect="fadeIn"
+                                     style="background-image: url({{ obj.photo.url }});"></div>
+                                <span class="text">
+                                  <div class="post-meta">
+                                    <span class="author mr-2"><img src="{{ obj.author.author_photo.url }}" alt="Colorlib"> {{ obj.author }}</span>&bullet;
+                                    <span class="mr-2">{{ obj.created_at|date:'d.m.Y' }} </span> &bullet;
+                                    <span class="mr-2">просморов: {{ obj.views }}</span> &bullet;
+                                    <span class="ml-2">
+                                        <span class="fa fa-comments">
+                                            {{ obj.cnt_comment}}
+                                        </span>
+                                    </span>
+                                            </div>
+                      <h2>{{ obj.title|safe|truncatewords_html:9 }}</h2>
+                    </span>
+                            </a>
+                        </div>
+                        {% endfor %}
+                        <!-- END post -->
+
+                    </div>
+                </div>
+
+            {% comment %}
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if page_obj.has_previous %}
+                            <a class="page-item" href="?page=1"><</a>
+                            <a class="page-item" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+                        {% endif %}
+
+                         <span class="current">
+                            {{ page_obj.number }}
+                         </span>
+
+                        {% if page_obj.has_next %}
+                            <a class="page-item" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+                            <a class="page-item" href="?page={{ page_obj.paginator.num_pages }}">></a>
+                        {% endif %}
+                    </span>
+                </div>
+            {% endcomment %}
+
+            </div>
+
+            <!-- END main-content -->
+
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

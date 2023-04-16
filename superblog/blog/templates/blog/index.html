@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load most_important_thing %}
+{% block content %}
+{% load cache %}
+
+
+{% if page_obj.number == 1 %}
+{% cache 600 general_top_slider %}
+<section class="site-section pt-5 pb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="owl-carousel owl-theme home-slider">
+
+                    {% for obj in most_popular_posts %}
+                        <div>
+                            <a href="{{ obj.get_absolute_url }}"
+                               class="a-block d-flex align-items-center height-lg"
+                               style="background-image: url({{ obj.photo.url }});">
+                                <div class="text half-to-full">
+                                    <span class="category mb-5">{{ obj.category }}</span>
+                                    <div class="post-meta">
+
+                                                    <span class="author mr-2"><img src="{{ obj.author.author_photo.url }}"
+                                                                                   alt="{{ obj.author }}"> {{ obj.author }}</span>&bullet;
+                                        <span class="mr-2">{{ obj.created_at|date:'d.m.Y' }}</span> &bullet;
+                                        <span class="mr-2">просморов: {{ obj.views }}</span> &bullet;
+                                        <span class="ml-2"><span class="fa fa-comments"></span> {{ obj.cnt_comment }}</span>
+
+                                    </div>
+                                    <h3>{{ obj.title }}</h3>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END section top -->
+{% endcache %}
+{% endif %}
+
+<section class="site-section py-sm">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h2 class="mb-4">Последние посты</h2>
+            </div>
+        </div>
+
+        <div class="row blog-entries">
+            <div class="col-md-12 col-lg-8 main-content">
+                <div class="row">
+                    {% for obj in object_list %}
+                    <div class="col-md-6">
+                        <a href="{{ obj.get_absolute_url }}" class="blog-entry element-animate"
+                           data-animate-effect="fadeIn">
+                            <img src="{{ obj.photo.url }}" alt="{{ obj.title }}">
+                            <div class="blog-content-body">
+                                <div class="post-meta">
+                                    <span class="author mr-2"><img src="{{ obj.author.author_photo.url }}"
+                                                                   alt="{{ obj.author }}">
+                                        {{ obj.author }}
+                                    </span>
+                                    <br>
+                                    <br>
+                                    <span class="mr-2">просмотров: {{ obj.views }}</span> &bullet;
+                                    <span class="ml-2"><span class="fa fa-comments">
+                                        {{ obj.cnt_comment }}
+                                    </span></span> &bullet;
+                                    <span class="mr-2">{{ obj.created_at|date:'d.m.Y' }}</span>
+                                </div>
+                                <h2>{{ obj.title }}</h2>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- END main-content -->
+            {% cache 600 sidebar%}
+            <div class="col-md-12 col-lg-4 sidebar">
+
+                <div class="sidebar-box">
+                    <div class="bio text-center">
+                        <img src="{{ popular_author.author_photo.url }}" alt="{{ popular_author }}" class="img-fluid">
+                        <div class="bio-body">
+                            <h2>{{ popular_author }}</h2>
+                            <p><a href="{{ popular_author.get_absolute_url }}" class="btn btn-primary btn-sm rounded">Больше
+                                информации</a></p>
+                            <p>Самый популярный автор</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END sidebar-box popular author-->
+
+                <div class="sidebar-box">
+                    <h3 class="heading">Популярные посты</h3>
+                    <div class="post-entry-sidebar">
+                        <ul>
+                            {% for post in popular_posts %}
+                            <li>
+                                <a href="{{ post.get_absolute_url }}">
+                                    <img src="{{ post.photo.url }}" alt="Image placeholder" class="mr-4">
+                                    <div class="text">
+                                        <h4>{{ post.title|safe|truncatewords_html:9 }}</h4>
+                                        <div class="post-meta">
+                                            <span class="mr-2">{{ post.created_at|date:'d.m.Y' }} </span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <!-- END sidebar-box popular posts -->
+
+                <div class="sidebar-box">
+                    <h3 class="heading">Популярные теги</h3>
+                    <ul class="tags">
+                            {% for tag in popular_tags %}
+                                <li><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></li>
+                            {% endfor %}
+                    </ul>
+                </div>
+                <!-- END sidebar tag -->
+                {% show_all_categories %}
+
+            </div>
+            {% endcache %}
+
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

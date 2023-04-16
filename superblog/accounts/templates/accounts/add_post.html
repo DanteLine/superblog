@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="site-section">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h1>Добавление поста</h1>
+            </div>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.media }}
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-primary">Сохранить</button>
+        </form>
+
+
+        </div>
+    </div>
+</section>
+
+
+</div>
+
+
+{% endblock %}
