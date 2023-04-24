@@ -146,4 +146,3 @@ def postdelete(request, slug=None):
         return redirect('lk', request.user.username)
     else:
         raise Http404
-    # return render(request, 'accounts/only_user.html', {'object': User.objects.get(username=request.user.username)})
